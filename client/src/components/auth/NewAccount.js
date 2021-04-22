@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Alert from '@material-ui/lab/Alert';
 import Button from '@material-ui/core/Button';
@@ -12,7 +12,9 @@ import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+
 import AlertContext from '../../context/alerts/alertContext';
+import AuthContext from  '../../context/authentication/authContext';
 
 function Copyright() {
     return (
@@ -57,6 +59,15 @@ const NewAccount = (props) => {
     const alertaContext = useContext(AlertContext);
     const { alert, showAlert } = alertaContext;
 
+    const authContext = useContext(AuthContext);
+    const { regUser, authenticated } = authContext;
+
+    useEffect(() => {
+        if(authenticated) {
+            props.history.push('/transactions');
+        }
+    }, [authenticated, props.history]);
+
     const [ user, setUser ] = useState({
         name: '',
         email: '',
@@ -79,17 +90,23 @@ const NewAccount = (props) => {
         if(name.trim() === '' || email.trim() === '' || password.trim() === '') {
             showAlert('Todos los campos son obligatorios', 'error')
             return;
-          }
+        }
     
           if(password.length < 6){
             showAlert('Password debe contener mínimo 6 caracteres', 'error')
             return;
-          }
+        }
     
           if(password !== repassword) {
             showAlert('Password deben ser iguales', 'error')
             return;
-          }
+        }
+
+        regUser({
+            name,
+            email,
+            password
+        });
     }
 
     const classes = useStyles();

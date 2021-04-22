@@ -38,17 +38,11 @@ exports.updateTransaction = async (req, res) => {
         
         const newTransaction = {};
 
-        if(concept) {
-            newTransaction.concept = concept;
-        }
+        if(concept) { newTransaction.concept = concept; }
 
-        if(amount) {
-            newTransaction.amount = amount;
-        }
+        if(amount) { newTransaction.amount = amount; }
 
-        if(operation) {
-            newTransaction.operation = operation;
-        }
+        if(operation) { newTransaction.operation = operation; }
 
     try {
 
