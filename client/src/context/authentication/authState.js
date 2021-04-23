@@ -19,6 +19,7 @@ const AuthState = props => {
         token: localStorage.getItem('token'),
         authenticated: null,
         user: null,
+        msg: null
     }
 
     const [ state, dispatch ] = useReducer(AuthReducer, initialState);
@@ -36,10 +37,15 @@ const AuthState = props => {
             userAuth();
 
         } catch (error) {
+            alert = {
+                msg: error.response.data.msg,
+                category: 'error'
+            }
             console.log(error);
 
             dispatch({
-                type: REG_ERROR
+                type: REG_ERROR,
+                payload: alert
             })
         }
     }
@@ -60,9 +66,41 @@ const AuthState = props => {
             });
 
         } catch (error) {
+            alert = {
+                msg: error.response.data.msg,
+                category: 'error'
+            }
             console.log(error);
             dispatch({
-                type: LOGIN_ERROR,                
+                type: LOGIN_ERROR,
+                payload: alert                
+            })
+        }
+    }
+
+    const userLogIn = async data => {
+        try {
+            const response = await clientAxios.post('/api/auth', data);
+
+            dispatch({
+                type: LOGIN_SUCCESS,
+                payload: response.data
+            })
+            console.log(response)
+
+            userAuth();
+
+        } catch (error) {
+            alert = {
+                msg: error.response.data.msg,
+                category: 'error'
+            }
+
+            console.log(error)
+
+            dispatch({
+                type: LOGIN_ERROR,
+                payload: alert
             })
         }
     }
@@ -73,7 +111,9 @@ const AuthState = props => {
                 token: state.token,
                 authenticated: state.authenticated,
                 user: state.user,
-                regUser
+                msg: state.msg,
+                regUser,
+                userLogIn
             }}
         >
             {props.children}

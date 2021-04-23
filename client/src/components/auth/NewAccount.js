@@ -60,13 +60,18 @@ const NewAccount = (props) => {
     const { alert, showAlert } = alertaContext;
 
     const authContext = useContext(AuthContext);
-    const { regUser, authenticated } = authContext;
+    const { msg, regUser, authenticated } = authContext;
 
     useEffect(() => {
         if(authenticated) {
             props.history.push('/transactions');
         }
-    }, [authenticated, props.history]);
+  
+        if(msg) {
+          showAlert(msg.msg, msg.category)
+        }
+  
+    }, [msg, authenticated, props.history]);
 
     const [ user, setUser ] = useState({
         name: '',

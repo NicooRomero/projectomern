@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Alert from '@material-ui/lab/Alert';
 import Button from '@material-ui/core/Button';
@@ -12,6 +12,7 @@ import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import AlertContext from '../../context/alerts/alertContext';
+import AuthContext from '../../context/authentication/authContext';
 
 function Copyright() {
     return (
@@ -51,10 +52,24 @@ function Copyright() {
 
   
 
-const Login = () => {
+const Login = (props) => {
 
     const alertaContext = useContext(AlertContext);
     const { alert, showAlert } = alertaContext;
+
+    const authContext = useContext(AuthContext);
+    const { msg, authenticated, userLogIn } = authContext;
+
+    useEffect(() => {
+      if(authenticated) {
+          props.history.push('/transactions');
+      }
+
+      if(msg) {
+        showAlert(msg.msg, msg.category)
+      }
+
+  }, [msg, authenticated, props.history]);
 
     const [ user, setUser] = useState({
         email: '',
@@ -78,9 +93,12 @@ const Login = () => {
             return;
           }
 
-        console.log(user)
+          userLogIn({
+              email,
+              password
+          });
     }
-
+    console.log(msg)
     const classes = useStyles();
     return ( 
         <Container maxWidth="xs">
