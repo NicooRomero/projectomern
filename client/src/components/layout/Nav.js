@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -7,7 +7,8 @@ import IconButton from '@material-ui/core/IconButton';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-// import AuthContext from '../context/authentication/authContext';
+
+import AuthContext from '../../context/authentication/authContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,12 +26,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MenuAppBar() {
 
-  // const authContext = useContext(AuthContext);
-  // const { user, userAuth, userSingOff } = authContext;
+  const authContext = useContext(AuthContext);
+  const { user, userAuth, userSingOff } = authContext;
 
-  // useEffect(() => {
-  //   userAuth();
-  // }, [])
+  useEffect(() => {
+    userAuth();
+  }, [])
 
   const classes = useStyles();
 
@@ -49,11 +50,11 @@ export default function MenuAppBar() {
     <div>      
       <AppBar className={classes.root} position="static">
         <Toolbar>
-            {/* { user ? */}
+             { user ? 
                 <Typography variant="h6" className={classes.title}>
-                    {/* {user.name} */}
+                    Hola,  {user.name} ! 
                 </Typography>
-            {/* : null} */}
+             : null} 
           
             <div>
               <IconButton
@@ -80,8 +81,8 @@ export default function MenuAppBar() {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Agregar Monto</MenuItem>
-                {/* <MenuItem onClick={() => userSingOff()}>Cerrar Sesión</MenuItem> */}
+                {/* <MenuItem onClick={handleClose}>Cerrar Sesión</MenuItem> */}
+                <MenuItem onClick={() => userSingOff()}>Cerrar Sesión</MenuItem>
               </Menu>
             </div>
         </Toolbar>

@@ -8,8 +8,15 @@ import Transactions from './components/Transactions';
 import AlertState from './context/alerts/alertState';
 import TransactionState from './context/transactions/transactionState';
 import OperationsState from './context/operations/operationState';
-
 import AuthState from './context/authentication/authState';
+
+import tokenAuth from './config/tokenAuth';
+import PrivateRoute from './components/routes/PrivateRoute';
+
+const token = localStorage.getItem('token');
+if(token) {
+  tokenAuth(token);
+}
 
 function App() {
   return (
@@ -21,7 +28,7 @@ function App() {
                 <Switch>
                   <Route exact path="/" component={Login} />
                   <Route exact path="/new-account" component={NewAccount} />
-                  <Route exact path="/transactions" component={Transactions} />
+                  <PrivateRoute exact path="/transactions" component={Transactions} />
                 </Switch>
               </Router>
             </AuthState>

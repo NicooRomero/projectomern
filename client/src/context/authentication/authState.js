@@ -19,7 +19,8 @@ const AuthState = props => {
         token: localStorage.getItem('token'),
         authenticated: null,
         user: null,
-        msg: null
+        msg: null,
+        load: true
     }
 
     const [ state, dispatch ] = useReducer(AuthReducer, initialState);
@@ -105,6 +106,12 @@ const AuthState = props => {
         }
     }
 
+    const userSingOff = () => {
+        dispatch({
+            type: SING_OFF
+        })
+    }
+
     return (
         <AuthContext.Provider
             value={{
@@ -112,8 +119,11 @@ const AuthState = props => {
                 authenticated: state.authenticated,
                 user: state.user,
                 msg: state.msg,
+                load: state.load,
                 regUser,
-                userLogIn
+                userLogIn,
+                userAuth,
+                userSingOff
             }}
         >
             {props.children}

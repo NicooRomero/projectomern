@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Nav from './layout/Nav';
 import AddBtn from './layout/AddBtn';
 import Operations from './Operations';
@@ -6,6 +6,8 @@ import Modal from './layout/Modal';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
+
+import AuthContext from '../context/authentication/authContext';
 
 function Copyright() {
     return (
@@ -20,6 +22,13 @@ function Copyright() {
 }
 
 const Transactions = () => {
+
+  const authContext = useContext(AuthContext);
+  const { userAuth } = authContext;
+
+  useEffect(() => {
+    userAuth();
+  }, []);
 
     return ( 
         <>
