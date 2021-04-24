@@ -10,42 +10,57 @@ import {
     EDIT_OPERATION
 } from '../../types/index';
 
+import clientAxios from '../../config/axios';
+
 const OperationState = props => {
     const initialState = {
-        operations: [
-            { id: 1, concept: "transporte", amount: "1500", date: "2021-03-25", type: "ingreso" },
-            { id: 2, concept: "ropa", amount: "3500", date: "2021-03-30", type: "ingreso" },
-            { id: 3, concept: "gimnasio", amount: "2500", date: "2021-03-10", type: "egreso" },
-            { id: 4, concept: "helado", amount: "500", date: "2021-03-14", type: "egreso" },
-            { id: 5, concept: "futbol", amount: "350", date: "2021-03-23", type: "egreso" },
-            { id: 6, concept: "gasolina", amount: "1500", date: "2021-03-31", type: "ingreso" },
-        ], 
+        operations: [], 
         userSesion: null,
         operationSelected: null
     }
 
     const [state, dispatch] = useReducer(OperationReducer, initialState);
 
-    const getOperation = userId => {
-        dispatch({
-            type: GET_OPERATIONS,
-            payload: userId
-        })
-    }
-
-    const addOperation = operation => {
+    const getOperation = async () => {
         
-        dispatch({
-            type: ADD_OPERATION,
-            payload: operation
-        })
+        try {
+            const response = await clientAxios.get('/api/transactions');
+            dispatch({
+                type: GET_OPERATIONS,
+                payload: response.data.transactions
+            })
+        } catch (error) {
+            console.log(error)
+        }
     }
 
-    const deletOperation = id => {
-        dispatch({
-            type: DELETE_OPERATION,
-            payload: id
-        })
+    const addOperation = async operation => {
+        
+        try {
+            const response = await clientAxios.post('/api/transactions', operation);
+            dispatch({
+                type: ADD_OPERATION,
+                payload: response.data
+            })
+        } catch (error) {
+            console.log(error)
+            
+        }
+        
+    }
+
+    const deletOperation = async id => {
+        
+        try {
+            await clientAxios.delete(`/api/transactions/${id}`);
+
+            dispatch({
+                type: DELETE_OPERATION,
+                payload: id
+            })
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     const selectedOperation = operation => {
@@ -55,11 +70,17 @@ const OperationState = props => {
         })
     }
 
-    const editOperation = operation => {
-        dispatch({
-            type: EDIT_OPERATION,
-            payload: operation
-        })
+    const editOperation = async operation => {
+        
+        try {
+            const response = await clientAxios.put(`/api/transactions/${operation._id}`, operation);
+            dispatch({
+                type: EDIT_OPERATION,
+                payload: response.data.transaction
+            })
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (
@@ -71,7 +92,8 @@ const OperationState = props => {
                 addOperation,
                 deletOperation,
                 selectedOperation,
-                editOperation
+                editOperation,
+                getOperation
                 
             }}
         >

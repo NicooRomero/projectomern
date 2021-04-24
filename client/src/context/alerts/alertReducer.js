@@ -3,7 +3,7 @@ import {
     HIDE_ALERT
 } from '../../types/index';
 
-export default (state,action) => {
+export default (state, action) => {
     switch (action.type) {
         case SHOW_ALERT:
             return {

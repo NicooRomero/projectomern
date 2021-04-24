@@ -1,7 +1,6 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Nav from './layout/Nav';
 import AddBtn from './layout/AddBtn';
-import Operations from './Operations';
 import Modal from './layout/Modal';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';

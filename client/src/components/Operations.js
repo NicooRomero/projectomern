@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import operationContext from '../context/operations/operationContext';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -44,7 +44,11 @@ const useStyles = makeStyles({
 export default function Operations({setOpen}) {
 
   const operationsContext = useContext(operationContext);
-  const { operations, deletOperation, selectedOperation } = operationsContext;
+  const { operations, deletOperation, selectedOperation, getOperation } = operationsContext;
+
+  useEffect(() => {
+    getOperation()
+  }, []);
 
   const operationDelete = id => {
     Swal.fire({
@@ -69,8 +73,8 @@ export default function Operations({setOpen}) {
     
   }
 
-  const operationSelected = operation => {    
-    selectedOperation(operation);
+  const operationSelected = transaction => {    
+    selectedOperation(transaction);
     setOpen(true);
     
   }
@@ -92,22 +96,21 @@ export default function Operations({setOpen}) {
               </TableHead>
 
               <TableBody>
-              {operations.map((operation) => (
-                  <StyledTableRow key={operation.id}>
+              {operations.map((transaction) => (
+                  <StyledTableRow key={transaction._id}>
                   <StyledTableCell component="th" scope="row">
-                      {operation.concept}
+                      {transaction.concept}
                   </StyledTableCell>
-                    <StyledTableCell align="center" >{operation.amount}</StyledTableCell>
-                    <StyledTableCell align="center" >{operation.date}</StyledTableCell>
-                    <StyledTableCell align="center" >{operation.type}</StyledTableCell>
+                    <StyledTableCell align="center" >$ {transaction.amount}</StyledTableCell>
+                    <StyledTableCell align="center" >{transaction.date}</StyledTableCell>
+                    <StyledTableCell align="center" >{transaction.operation}</StyledTableCell>
                     <StyledTableCell align="center" >
                       <Button
                         variant="contained"
                         color="primary"
-                        className={classes.button}
                         startIcon={<EditIcon />}
                         className={classes.btn}
-                        onClick={() => operationSelected(operation)}
+                        onClick={() => operationSelected(transaction)}
                       >
                         Edit
                       </Button>
@@ -116,7 +119,7 @@ export default function Operations({setOpen}) {
                         color="secondary"
                         className={classes.button}
                         startIcon={<DeleteIcon />}
-                        onClick={() => operationDelete(operation.id)}
+                        onClick={() => operationDelete(transaction._id)}
                         
                       >
                         Delete

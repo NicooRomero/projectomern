@@ -11,7 +11,8 @@ export default (state, action) => {
         case GET_OPERATIONS:
             return {
                 ...state,
-                userSesion: state.operations.filter(operation => operation.userId === action.payload)
+                userSesion: state.operations.filter(operation => operation.userId === action.payload),
+                operations: action.payload
             }
         case ADD_OPERATION:
             return {
@@ -21,7 +22,7 @@ export default (state, action) => {
         case DELETE_OPERATION:
             return {
                 ...state,
-                operations: state.operations.filter(operation  => operation.id !== action.payload)
+                operations: state.operations.filter(operation  => operation._id !== action.payload)
             }
         case SELECTED_OPERATION:
             return {
@@ -31,7 +32,7 @@ export default (state, action) => {
         case EDIT_OPERATION:
             return {
                 ...state,
-                operations: state.operations.map(operation => operation.id === action.payload.id ? action.payload : operation),
+                operations: state.operations.map(operation => operation._id === action.payload._id ? action.payload : operation),
                 operationSelected: null
             }
         default:

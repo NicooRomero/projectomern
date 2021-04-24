@@ -46,29 +46,29 @@ const NewOp = ({setOpen}) => {
 
     useEffect(() => {
         if(operationSelected !== null) {
-            setOperation(operationSelected);
+            setTransaction(operationSelected);
         } else {
-            setOperation({
+            setTransaction({
                 concept: '',
                 amount: '',
-                date: '',
-                type: ''
+                // date: '',
+                operation: ''
             });
         }
     }, [operationSelected]);
 
-    const [ operation, setOperation ] = useState({
+    const [ transaction, setTransaction ] = useState({
         concept: '',
         amount: '',
-        date: '',
-        type: ''
+        // date: '',
+        operation: ''
     });
 
-    const { concept, amount, date, type } = operation;
+    const { concept, amount, operation } = transaction;
 
     const onChange = e => {
-        setOperation({
-            ...operation,
+        setTransaction({
+            ...transaction,
             [e.target.name] : e.target.value
         })
     } 
@@ -76,28 +76,30 @@ const NewOp = ({setOpen}) => {
     const onSubmit = e => {
         e.preventDefault();
 
-        if(concept.trim() === '' || amount.trim() === '' || date.trim() === '' || type.trim() === '') {
+        if(concept === '' || amount === '' || operation === '') {
             setError(true)
             return;
         }
 
         if(operationSelected === null) {
-            addOperation(operation);            
+            addOperation(transaction);            
         } else {
-            editOperation(operation);
+            editOperation(transaction);
         }
 
 
-        setOperation({
+        setTransaction({
             concept: '',
             amount: '',
-            date: '',
-            type: ''
+            // date: '',
+            operation: ''
         });
         
 
         setOpen(false);
     }
+
+    console.log(transaction)
     
 
 
@@ -141,7 +143,7 @@ const NewOp = ({setOpen}) => {
                                 value={amount}
                                 onChange={onChange}
                             />
-                            <TextField
+                            {/* <TextField
                                 variant="outlined"
                                 margin="normal"
                                 required
@@ -153,17 +155,17 @@ const NewOp = ({setOpen}) => {
                                 helperText="Seleccione una fecha"
                                 value={date}
                                 onChange={onChange}
-                            />
+                            /> */}
                             <TextField
                                 variant="outlined"
                                 margin="normal"
-                                id="type"
-                                name="type"
+                                id="operation"
+                                name="operation"
                                 required
                                 select
                                 fullWidth
                                 label="Tipo"
-                                value={type}
+                                value={operation}
                                 onChange={onChange}
                                 SelectProps={{
                                     native: true,

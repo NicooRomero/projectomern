@@ -16,15 +16,10 @@ export default (state, action) => {
                 ...state,
                 transactions: [...state.transactions, action.payload]
             }
-        case GET_TRANSACTIONS:
-            return {
-                ...state,
-                transactions: state.transactions.filter(transactions => transactions.id === action.payload)
-            }
         case DELETE_OPERATION:
             return {
                 ...state,
-                transactions: state.transactions.filter(transactions => transactions.id !== action.payload)
+                transactions: state.transactions.filter(transactions => transactions.id === action.payload)
             }
         default:
             return state;

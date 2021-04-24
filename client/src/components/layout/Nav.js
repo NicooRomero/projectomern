@@ -31,6 +31,7 @@ export default function MenuAppBar() {
 
   useEffect(() => {
     userAuth();
+    // eslint-disable-next-line
   }, [])
 
   const classes = useStyles();
